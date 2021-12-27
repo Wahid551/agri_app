@@ -67,7 +67,7 @@ class _CropsHomePageState extends State<CropsHomePage> {
                       ),
                       CategoryCard(
                         title: "Weather Updates",
-                        image: "assets/images/mandi.png",
+                        image: "assets/images/weather.png",
                         press: () {
                            MaterialPageRoute(builder: (context) => WeatherUpdates());
                         },

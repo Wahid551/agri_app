@@ -68,7 +68,7 @@ class _MachinesHomePageState extends State<MachinesHomePage> {
                       ),
                       CategoryCard(
                         title: "Weather Updates",
-                        image: "assets/images/mandi.png",
+                        image: "assets/images/weather.png",
                         press: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => WeatherUpdates()));

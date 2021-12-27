@@ -262,7 +262,7 @@ class _AuthPageState extends State<AuthPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Agriculture',
+                                'Khushaal',
                                 style: GoogleFonts.poppins(
                                   color:
                                       isDarkMode ? Colors.white : Colors.black,
@@ -271,7 +271,7 @@ class _AuthPageState extends State<AuthPage> {
                                 ),
                               ),
                               Text(
-                                'App',
+                                'Kisaan',
                                 style: GoogleFonts.poppins(
                                   color: const Color(0xff3b22a1),
                                   fontSize: size.height * 0.03,

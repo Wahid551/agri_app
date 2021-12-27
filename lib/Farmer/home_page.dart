@@ -85,7 +85,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                       ),
                       CategoryCard(
                         title: "Weather Updates",
-                        image: "assets/images/mandi.png",
+                        image: "assets/images/weather.png",
                         press: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => WeatherUpdates()));
