@@ -1,9 +1,13 @@
 import 'package:agri_app/Farmer/Buy/Add.dart';
 import 'package:agri_app/Farmer/Buy/buy.dart';
+import 'package:agri_app/Farmer/Buy/buy_product.dart';
 import 'package:agri_app/Farmer/drawer.dart';
+import 'package:agri_app/Farmer/mandi_updates.dart';
 import 'package:agri_app/Farmer/weather_update.dart';
+import 'package:agri_app/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import 'categories.dart';
 
@@ -15,11 +19,15 @@ class FarmerHomePage extends StatefulWidget {
 }
 
 class _FarmerHomePageState extends State<FarmerHomePage> {
+  late UserProvider userData;
   @override
   Widget build(BuildContext context) {
+    userData=Provider.of<UserProvider>(context);
+    userData.getUserData();
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      drawer:  MyDrawer(),
+      drawer:  MyDrawer(userProvider: userData,),
       appBar: AppBar(
         backgroundColor: Colors.green.shade400,
         elevation: 2.0,
@@ -50,13 +58,13 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     mainAxisSpacing: 20,
                     children: <Widget>[
                       CategoryCard(
-                        title: "Buy Crops",
-                        image: "assets/images/crops.png",
+                        title: "Buy Seeds",
+                        image: "assets/images/seeds.png",
                         press: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>SmartConnect(user: "crops",)));
+                                  builder: (context) =>BuyProduct(category: "seeds",)));
                         },
                       ),
                       CategoryCard(
@@ -64,7 +72,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                         image: "assets/images/fertilizers.png",
                         press: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SmartConnect(user: "fertilizers")));
+                              MaterialPageRoute(builder: (context) => BuyProduct(category: "fertilizers")));
                         },
                       ),
                       CategoryCard(
@@ -72,15 +80,15 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                         image: "assets/images/machines.png",
                         press: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SmartConnect(user: "machines")));
+                              MaterialPageRoute(builder: (context) => BuyProduct(category: "machines")));
                         },
                       ),
                       CategoryCard(
                         title: "Mandi Updates",
                         image: "assets/images/mandi.png",
                         press: () {
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (context) => Room()));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => MandiUpdates()));
                         },
                       ),
                       CategoryCard(

@@ -1,11 +1,17 @@
 import 'dart:io';
 
 import 'package:agri_app/colors/appcolors.dart';
+import 'package:agri_app/provider/product_provider.dart';
+import 'package:agri_app/provider/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:random_string/random_string.dart';
 
 
 class AddProduct extends StatefulWidget {
@@ -21,104 +27,104 @@ class _AddProductState extends State<AddProduct> {
   final productNameController = TextEditingController();
   final productPriceController=TextEditingController();
   final productDescController = TextEditingController();
-
+  late UserProvider userData;
   File? selectedImage;
-  // final picker = ImagePicker();
+  final picker = ImagePicker();
   bool _isLoading = false;
-  // late ProductProvider _productProvider;
+  late ProductProvider _productProvider;
 
   // Get Image from Gallery
-  // Future getImage() async {
-  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
-  //
-  //   setState(() {
-  //     if (pickedFile != null) {
-  //       selectedImage = File(pickedFile.path);
-  //     } else {
-  //       print('No image selected.');
-  //     }
-  //   });
-  // }
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        selectedImage = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
 
   // Upload image to Cloud Storage then Add Data To Firestore
-  // uploadProduct() async {
-  //   if (formKey.currentState!.validate() && selectedImage != null) {
-  //     showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (BuildContext context) {
-  //         return Dialog(
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(20.0),
-  //             child: new Row(
-  //               children: [
-  //                 new CircularProgressIndicator(),
-  //                 SizedBox(
-  //                   width: 25.0,
-  //                 ),
-  //                 new Text("Loading, Please wait"),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //     );
-  //
-  //     /// uploading image to firebase storage
-  //     Reference firebaseStorageRef = FirebaseStorage.instance
-  //         .ref()
-  //         .child("ProductImages")
-  //         .child("${randomAlphaNumeric(9)}.jpg");
-  //
-  //     final UploadTask task = firebaseStorageRef.putFile(selectedImage!);
-  //
-  //     task.whenComplete(() async {
-  //       try {
-  //         var downloadURL = await firebaseStorageRef.getDownloadURL();
-  //         print("this is url $downloadURL");
-  //         Map<String, dynamic> productMap = {
-  //           "ProductImage": downloadURL,
-  //           "ProductPrice": int.parse(productPriceController.text),
-  //           "ProductName": productNameController.text,
-  //           "ProductDesc": productDescController.text,
-  //           "ProductCategory":valueChoose,
-  //           "GenderCategory":_value,
-  //           "userUid": "${randomAlphaNumeric(9)}${FirebaseAuth.instance.currentUser!.uid}",
-  //           "userDocId":FirebaseAuth.instance.currentUser!.uid,
-  //           'DateTime': DateTime.now().toIso8601String(),
-  //         };
-  //
-  //         /// Add Data to Firestore
-  //         _productProvider.addProduct(productMap).then((result) {
-  //           Navigator.of(context).pop();
-  //           // Navigator.of(context).pop();
-  //           ScaffoldMessenger.of(context).showSnackBar(
-  //             SnackBar(
-  //               backgroundColor: Colors.green,
-  //               content: Text(
-  //                 "Product Added Successfully",
-  //                 style: TextStyle(fontSize: 20.0),
-  //               ),
-  //             ),
-  //           );
-  //         });
-  //       } catch (onError) {
-  //         print("Error");
-  //       }
-  //     });
-  //     // var downloadUrl =
-  //     //     await (await task.whenComplete(() => null)).ref.getDownloadURL();
-  //
-  //   } else {}
-  // }
+  uploadProduct() async {
+    if (formKey.currentState!.validate() && selectedImage != null) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: new Row(
+                children: [
+                  new CircularProgressIndicator(),
+                  SizedBox(
+                    width: 25.0,
+                  ),
+                  new Text("Loading, Please wait"),
+                ],
+              ),
+            ),
+          );
+        },
+      );
 
-  var _value = 0;
-  var valueChoose;
+      /// uploading image to firebase storage
+      Reference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child("ProductImages")
+          .child("${randomAlphaNumeric(9)}.jpg");
+
+      final UploadTask task = firebaseStorageRef.putFile(selectedImage!);
+
+      task.whenComplete(() async {
+        try {
+          var downloadURL = await firebaseStorageRef.getDownloadURL();
+          print("this is url $downloadURL");
+          Map<String, dynamic> productMap = {
+            "ProductImage": downloadURL,
+            "ProductPrice": int.parse(productPriceController.text),
+            "ProductName": productNameController.text,
+            "ProductDesc": productDescController.text,
+            "userDocId": "${randomAlphaNumeric(9)}${FirebaseAuth.instance.currentUser!.uid}",
+            "userUid":FirebaseAuth.instance.currentUser!.uid,
+            'DateTime': DateTime.now().toIso8601String(),
+            "category":widget.title=="Add Seeds"?"Seeds":"Fertilizers",
+            "sellerName":userData.currentUserData.firstName+" "+userData.currentUserData.lastName,
+          };
+
+          /// Add Data to Firestore
+          _productProvider.addProduct(productMap).then((result) {
+            Navigator.of(context).pop();
+            // Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.green,
+                content: Text(
+                  "Product Added Successfully",
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ),
+            );
+          });
+        } catch (onError) {
+          print("Error");
+        }
+      });
+      // var downloadUrl =
+      //     await (await task.whenComplete(() => null)).ref.getDownloadURL();
+
+    } else {}
+  }
+
+  // var _value = 0;
+  // var valueChoose;
   List listItems = ["Crops","Machine"];
   @override
   Widget build(BuildContext context) {
-    // _productProvider = Provider.of(context);
-
+    _productProvider = Provider.of(context);
+    userData=Provider.of(context);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       body: SafeArea(
@@ -128,7 +134,7 @@ class _AddProductState extends State<AddProduct> {
               alignment: Alignment.center,
               padding: EdgeInsets.only(top: 30),
               child: Text(
-                "Seeds Whole Sale Dealer",
+                "Seeds WHD",
                 textScaleFactor: 1.3,
                 style: GoogleFonts.abel(
                   textStyle: TextStyle(
@@ -250,7 +256,7 @@ class _AddProductState extends State<AddProduct> {
                         ),
                         GestureDetector(
                             onTap: (){
-                              // getImage();
+                              getImage();
                             },
                             child: selectedImage != null?Container(
                               margin: EdgeInsets.only(right: 18),
@@ -321,7 +327,7 @@ class _AddProductState extends State<AddProduct> {
                     ),
                     GestureDetector(
                       onTap: (){
-                        // uploadProduct();
+                        uploadProduct();
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 75),

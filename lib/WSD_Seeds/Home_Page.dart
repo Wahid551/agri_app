@@ -1,8 +1,12 @@
+
 import 'package:agri_app/Farmer/categories.dart';
-import 'package:agri_app/WSD_Seeds/Buy/buy.dart';
+import 'package:agri_app/WSD_Seeds/Buy/buy_product.dart';
+import 'package:agri_app/WSD_Seeds/add_product.dart';
 import 'package:agri_app/WSD_Seeds/drawer.dart';
+import 'package:agri_app/provider/user_provider.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class SeedsHomePage extends StatefulWidget {
@@ -13,11 +17,14 @@ class SeedsHomePage extends StatefulWidget {
 }
 
 class _SeedsHomePageState extends State<SeedsHomePage> {
+  late UserProvider userData;
   @override
   Widget build(BuildContext context) {
+    userData=Provider.of<UserProvider>(context);
+    userData.getUserData();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      drawer:  MyDrawer(),
+      drawer:  MyDrawer(userProvider: userData,),
       appBar: AppBar(
         backgroundColor: Colors.green.shade400,
         elevation: 2.0,
@@ -53,7 +60,7 @@ class _SeedsHomePageState extends State<SeedsHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>SmartConnect(user: "seeds",)));
+                                  builder: (context) =>BuyProduct(category: "seeds",)));
                         },
                       ),
                       CategoryCard(
@@ -61,7 +68,7 @@ class _SeedsHomePageState extends State<SeedsHomePage> {
                         image: "assets/images/fertilizers.png",
                         press: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SmartConnect(user: "fertilizers")));
+                              MaterialPageRoute(builder: (context) => BuyProduct(category: "fertilizers")));
                         },
                       ),
                       // CategoryCard(

@@ -13,7 +13,7 @@ class _WeatherUpdatesState extends State<WeatherUpdates> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:  MyDrawer(),
+      // drawer:  MyDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.green.shade400,
         elevation: 2.0,

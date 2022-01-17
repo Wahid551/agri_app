@@ -18,7 +18,7 @@ class _BidPageState extends State<BidPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      drawer:  MyDrawer(),
+      // drawer:  MyDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.green.shade400,
         elevation: 2.0,

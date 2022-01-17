@@ -18,7 +18,7 @@ class _smartConnectState extends State<SmartConnect> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      drawer:  MyDrawer(),
+      // drawer:  MyDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.green.shade400,
         elevation: 2.0,

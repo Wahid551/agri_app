@@ -1,28 +1,40 @@
 
+
+import 'package:agri_app/Farmer/my_orders/orders_list.dart';
 import 'package:agri_app/WSD_Machines/add_product.dart';
+import 'package:agri_app/WSD_Machines/cart/cartScreen.dart';
 import 'package:agri_app/WSD_Machines/home_page.dart';
-import 'package:agri_app/WSD_Seeds/Home_Page.dart';
+import 'package:agri_app/WSD_Machines/machines_list.dart';
+import 'package:agri_app/WSD_Seeds/customer_orders.dart';
+
 
 import 'package:agri_app/colors/appcolors.dart';
+import 'package:agri_app/login_register.dart';
+import 'package:agri_app/provider/product_provider.dart';
+import 'package:agri_app/provider/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 
 class MyDrawer extends StatefulWidget {
-  // late userData userProvider;
-  // MyDrawer({required this.userProvider});
+  late UserProvider userProvider;
+  MyDrawer({required this.userProvider});
 
   @override
   _MyDrawerState createState() => _MyDrawerState();
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-
+  late ProductProvider productProvider;
 
   @override
   Widget build(BuildContext context) {
+    productProvider=Provider.of(context);
+    var data=widget.userProvider.currentUserData;
     return Drawer(
       elevation: 0,
       child: Container(
@@ -46,7 +58,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   )
               ),
               accountName: Text(
-                'ABCD',
+                data.firstName+" "+data.lastName,
                 // widget.userProvider.currentUserData.firstName+" "+widget.userProvider.currentUserData.lastName,
                 style: GoogleFonts.titanOne(
                   textStyle: TextStyle(
@@ -54,7 +66,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
               ),
               accountEmail: Text(
-                'email@gmail.com',
+                data.userEmail,
                 // widget.userProvider.currentUserData.userEmail,
                 style: TextStyle(color: Colors.black87),
               ),
@@ -97,7 +109,20 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                 // Navigator.push(context, MaterialPageRoute(builder: (context)=>AddProduct(title:"Add Fertlizers",)));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Machines_List()));
+              },
+              child: ListTile(
+                selectedTileColor: AppColors.coralColor,
+                title: Text(
+                  "Machines List",
+                  style: TextStyle(color: Colors.black87, fontSize: 15),
+                ),
+                leading: Icon(CupertinoIcons.profile_circled, color: Colors.black87,),
+              ),
+            ),
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomerOrders()));
               },
               child: ListTile(
                 selectedTileColor: AppColors.apricotColor,
@@ -111,16 +136,30 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                // Navigator.push(context, MaterialPageRoute(builder: (context)=> CustomerOrderLists()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>OrdersList()));
               },
               child: ListTile(
                 selectedTileColor: AppColors.apricotColor,
                 selected: true,
                 title: Text(
-                  "Orders List",
+                  "My Orders",
                   style: TextStyle(color: Colors.black87, fontSize: 15),
                 ),
                 leading: Icon(CupertinoIcons.list_bullet_below_rectangle, color: Colors.black87,),
+              ),
+            ),
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
+              },
+              child: ListTile(
+                selectedTileColor: AppColors.apricotColor,
+                selected: true,
+                title: Text(
+                  "Review Cart",
+                  style: TextStyle(color: Colors.black87, fontSize: 15),
+                ),
+                leading: Icon(CupertinoIcons.cart, color: Colors.black87,),
               ),
             ),
             Padding(
@@ -129,9 +168,9 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             ListTile(
               onTap: ()async{
-                // await FirebaseAuth.instance.signOut().then((value) {
-                //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>WelcomeScreen()));
-                // });
+                await FirebaseAuth.instance.signOut().then((value) {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>AuthPage()));
+                });
 
               },
               selectedTileColor: AppColors.apricotColor,

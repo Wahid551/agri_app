@@ -1,9 +1,13 @@
 import 'package:agri_app/Farmer/categories.dart';
+import 'package:agri_app/Farmer/mandi_updates.dart';
 
 import 'package:agri_app/WSD_Machines/Buy/buy.dart';
+import 'package:agri_app/WSD_Machines/Buy/buy_product.dart';
 import 'package:agri_app/WSD_Machines/drawer.dart';
 import 'package:agri_app/WSD_Machines/weather_update.dart';
+import 'package:agri_app/provider/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -15,11 +19,14 @@ class MachinesHomePage extends StatefulWidget {
 }
 
 class _MachinesHomePageState extends State<MachinesHomePage> {
+  late UserProvider userData;
   @override
   Widget build(BuildContext context) {
+    userData=Provider.of<UserProvider>(context);
+    userData.getUserData();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      drawer:  MyDrawer(),
+      drawer:  MyDrawer(userProvider: userData,),
       appBar: AppBar(
         backgroundColor: Colors.green.shade400,
         elevation: 2.0,
@@ -55,15 +62,15 @@ class _MachinesHomePageState extends State<MachinesHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>SmartConnect()));
+                                  builder: (context) =>BuyProduct()));
                         },
                       ),
                       CategoryCard(
                         title: "Mandi Updates",
                         image: "assets/images/mandi.png",
                         press: () {
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (context) => SmartConnect(user: "fertilizers")));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => MandiUpdates()));
                         },
                       ),
                       CategoryCard(
