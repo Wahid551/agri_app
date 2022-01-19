@@ -5,6 +5,7 @@ import 'package:agri_app/Farmer/drawer.dart';
 import 'package:agri_app/Farmer/mandi_updates.dart';
 import 'package:agri_app/Farmer/weather_update.dart';
 import 'package:agri_app/provider/user_provider.dart';
+import 'package:agri_app/ui/Climatefile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -96,7 +97,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                         image: "assets/images/weather.png",
                         press: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => WeatherUpdates()));
+                              MaterialPageRoute(builder: (context) => climate()));
                         },
                       ),
                       // CategoryCard(

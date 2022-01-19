@@ -6,6 +6,7 @@ import 'package:agri_app/WSD_Machines/Buy/buy_product.dart';
 import 'package:agri_app/WSD_Machines/drawer.dart';
 import 'package:agri_app/WSD_Machines/weather_update.dart';
 import 'package:agri_app/provider/user_provider.dart';
+import 'package:agri_app/ui/Climatefile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -78,7 +79,7 @@ class _MachinesHomePageState extends State<MachinesHomePage> {
                         image: "assets/images/weather.png",
                         press: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => WeatherUpdates()));
+                              MaterialPageRoute(builder: (context) => climate()));
                         },
                       ),
                       // CategoryCard(
