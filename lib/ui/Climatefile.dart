@@ -33,10 +33,23 @@ class _climateState extends State<climate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: Text('Weather Update'),
+      //   backgroundColor: Colors.red,
+      //   actions: [
+      //     IconButton(
+      //         icon: Icon(Icons.menu),
+      //         onPressed: () {
+      //           _gotonextScreen(context);
+      //         }),
+      //   ],
+      // ),
       appBar: AppBar(
+        backgroundColor: Colors.green.shade400,
+        elevation: 2.0,
         centerTitle: true,
-        title: Text('Climate App'),
-        backgroundColor: Colors.red,
+        title: Text('Weather Update'),
         actions: [
           IconButton(
               icon: Icon(Icons.menu),
